@@ -73,9 +73,16 @@ namespace String_Calculator
                 //if passed empty string, skip addition
                 if (String.IsNullOrEmpty(n) || String.IsNullOrWhiteSpace(n))
                     continue;
+
+                //Converting to int
+                int num = Convert.ToInt32(n);
+
+                //if larger than 1000 - ignore
+                if (num > 1000)
+                    continue;
                 
                 //otherwise perform addition
-                result += Convert.ToInt32(n); 
+                result += num; 
             }
 
             //check if any exceptions
