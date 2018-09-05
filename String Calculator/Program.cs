@@ -35,6 +35,29 @@ namespace String_Calculator
 
     }
 
+    //Declaring Calculations Class
+    public class Calculations : Event
+    {
+        public Calculator Target;
+        public string Numbers;
+        public int Result;
+        
+        //Constructor
+        public Calculations(Calculator target, string numbers, int result)
+        {
+            //assign properties
+            Target = target;
+            Numbers = numbers;
+            Result = result;
+        }
+
+        //Override To String for calculations
+        public override string ToString()
+        {
+            return $"Calculated {Result} from {Numbers}";
+        }
+    }
+
     //Declaring Command Class
     public class Command : EventArgs
     {
@@ -87,6 +110,9 @@ namespace String_Calculator
             {
                 //Perform Addition Process
                 Add(command.Numbers);
+
+                //Add new event
+                broker.Events.Add(new Calculations(this, command.Numbers, this.Result));
             }
         }
 
@@ -297,6 +323,10 @@ namespace String_Calculator
 
             //Spit out the result
             Console.WriteLine("Result is: " + result);
+
+            //Print all events
+            foreach (var ev in broker.Events)
+                Console.WriteLine(ev);
 
             //Prompt for Key stroke
             Console.WriteLine("Press any key to continue...");
