@@ -15,11 +15,15 @@ namespace String_Calculator
         //Add method declaration, as per requirement
         public int Add(string numbers)
         {
-            //If input contains anything but 0 1 2 or , return 0
-            if (Regex.IsMatch(numbers, "[^012,]"))
-                return 0;
+            //Replace new line delimeters with comma
+            if (numbers.Contains("\\n"))
+                numbers = numbers.Replace("\\n", ",");
 
-            //Splitting by comma only
+            //if string contains 2 delimeters in a row return 0
+            if (numbers.Contains(",,"))
+                return 0;
+            
+            //Splitting by comma only and it does take unknown amount of numbers
             var numbersArray = numbers.Split(',');
             
             //if string is emtpy, bale with 0
@@ -27,11 +31,15 @@ namespace String_Calculator
                 return 0;
 
             //This will store our result
-            int result = 0;
+            int result = 0; 
 
             //Looping through string, since we only do addition, we dont have to search for operator
             foreach (string n in numbersArray)
             {
+                //If input contains anything but 0 1 2 or , return 0
+                if (Regex.IsMatch(n, "[^0123]"))
+                    return 0;
+
                 //if passed empty string, skip addition
                 if (String.IsNullOrEmpty(n) || String.IsNullOrWhiteSpace(n))
                     continue;
@@ -53,6 +61,7 @@ namespace String_Calculator
     {
         static void Main(string[] args)
         {
+            //Instantiate Calculator object
             Calculator cal = new Calculator();
             
             //Prompt for string 
@@ -64,8 +73,10 @@ namespace String_Calculator
             //Spit out the result
             Console.WriteLine("Result is: " + cal.Add(s));
 
+            //Prompt for Key stroke
             Console.WriteLine("Press any key to continue...");
 
+            //Receive key input
             Console.ReadKey(true);
         }
     }
