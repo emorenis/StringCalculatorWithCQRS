@@ -28,8 +28,9 @@ namespace String_Calculator
                 //cut out delimiter substring 
                 numbers = numbers.Substring(5, numbers.Length-5);
             }
-            
-            foreach(string delim in extraDelimeters)
+
+            //loop through extra delimiters
+            foreach (string delim in extraDelimeters)
             {
                 //Replace any delimeters with comma
                 if (numbers.Contains(delim))
@@ -48,11 +49,23 @@ namespace String_Calculator
                 return 0;
 
             //This will store our result
-            int result = 0; 
+            int result = 0;
+
+            //Instantiate exceptions list and exception message
+            List<string> exceptions = new List<string>();
+            string exceptionMessage = "negatives not allowed: ";
 
             //Looping through string, since we only do addition, we dont have to search for operator
             foreach (string n in numbersArray)
             {
+                //check if any numbers is negative
+                if (n.Contains("-"))
+                {
+                    //if yes, add to exceptions and continue
+                    exceptions.Add(n);
+                    continue;
+                }
+                
                 //If input contains anything but 0 1 2 or , return 0
                 if (Regex.IsMatch(n, "[^0123]"))
                     return 0;
@@ -63,6 +76,19 @@ namespace String_Calculator
                 
                 //otherwise perform addition
                 result += Convert.ToInt32(n); 
+            }
+
+            //check if any exceptions
+            if (exceptions.Count > 0)
+            {
+                //loop through exceptions and append exception message
+                foreach (string ex in exceptions)
+                    exceptionMessage = exceptionMessage + ex + " ";
+
+                //Zero result
+                result = 0;
+                //Throw exception
+                Console.Write(exceptionMessage);
             }
 
             //assign result to main var
