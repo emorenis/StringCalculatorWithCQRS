@@ -15,14 +15,31 @@ namespace String_Calculator
         //Add method declaration, as per requirement
         public int Add(string numbers)
         {
-            //Replace new line delimeters with comma
-            if (numbers.Contains("\\n"))
-                numbers = numbers.Replace("\\n", ",");
+            //Define list of Extra Delimiters and add \n
+            List<string> extraDelimeters = new List<string>();
+            extraDelimeters.Add("\\n");
+
+            //Check if line contains extra delimiter
+            if (numbers.Contains("//"))
+            {
+                //Add new delimiter to list
+                extraDelimeters.Add(numbers.Substring(2,1));
+
+                //cut out delimiter substring 
+                numbers = numbers.Substring(5, numbers.Length-5);
+            }
+            
+            foreach(string delim in extraDelimeters)
+            {
+                //Replace any delimeters with comma
+                if (numbers.Contains(delim))
+                    numbers = numbers.Replace(delim, ",");
+            }
 
             //if string contains 2 delimeters in a row return 0
             if (numbers.Contains(",,"))
                 return 0;
-            
+
             //Splitting by comma only and it does take unknown amount of numbers
             var numbersArray = numbers.Split(',');
             
