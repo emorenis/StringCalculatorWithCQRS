@@ -11,12 +11,13 @@ namespace String_Calculator
     {
         //Declaring for future use
         int Result = 0;
-        
+        List<string> extraDelimeters;
+
         //Add method declaration, as per requirement
         public int Add(string numbers)
         {
             //Define list of Extra Delimiters and add \n
-            List<string> extraDelimeters = new List<string>();
+            extraDelimeters = new List<string>();
             extraDelimeters.Add("\\n");
 
             //Check if line contains extra delimiter
@@ -38,11 +39,11 @@ namespace String_Calculator
                 }
                 else
                 {
-                    //Add new delimiter to list
-                    extraDelimeters.Add(numbers.Substring(1, index-1));
-
-                    //cut out delimiter substring 
-                    numbers = numbers.Substring(index+3, numbers.Length - index-3);
+                    //Call Complex Delimiter Search function
+                    numbers = AddComplexDelimiters(numbers, index);
+                    
+                    //cut out end of delimiter substring 
+                    numbers = numbers.Substring(2, numbers.Length - 2);
                 }
             }
 
@@ -120,6 +121,25 @@ namespace String_Calculator
 
             //return result
             return this.Result;
+        }
+
+        private string AddComplexDelimiters(string numbers, int index)
+        {
+            //Add new delimiter to list
+            extraDelimeters.Add(numbers.Substring(1, index - 1));
+
+            //cut out delimiter substring 
+            numbers = numbers.Substring(index + 1, numbers.Length - index - 1);
+
+            //Determine if still present complex delimiter 
+            index = numbers.IndexOf("]");
+
+            //Return if no more complex delimiters
+            if (index == -1)
+                return numbers;
+            else
+                //Recursive call to find more delimiters
+                return AddComplexDelimiters(numbers, index);
         }
     }
 
