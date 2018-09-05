@@ -21,6 +21,12 @@ namespace String_Calculator
 
         //Declare Command Invoke Method  
         public void Command(Command command) => Commands?.Invoke(this, command);
+
+        public int Query(Query query)
+        {
+            Queries?.Invoke(this, query);
+            return query.Result;
+        }
     }
 
     //Declaring Event Class
@@ -32,14 +38,14 @@ namespace String_Calculator
     //Declaring Command Class
     public class Command : EventArgs
     {
-        //Declare Calculator and Passed string
-        public Calculator Calc;
+        //Declare Calculator target and Passed string
+        public Calculator Target;
         public string Numbers;
 
         //Instantiate properties in constructor 
         public Command(Calculator calc, string numbers)
         {
-            Calc = calc;
+            Target = calc;
             Numbers = numbers;
         }
     }
@@ -47,7 +53,9 @@ namespace String_Calculator
     //Declaring Query Class
     public class Query
     {
-
+        //Declare Calculator target and Result variable
+        public Calculator Target;
+        public int Result;
     }
 
     public class Calculator
@@ -66,21 +74,35 @@ namespace String_Calculator
         {
             //Assign broker 
             this.broker = broker;
-            //Declare Delegate
+            //Declare Delegates
             broker.Commands += Perform;
+            broker.Queries += Retrieve;
         }
 
+        //This Method performs addition on command
         private void Perform(object origin, Command command)
         {
-            //check if command is present and Calculator object is correct
-            if (command != null && command.Calc == this)
+            //check if command is present and Calculator target object is correct
+            if (command != null && command.Target == this)
             {
+                //Perform Addition Process
                 Add(command.Numbers);
             }
         }
 
+        //This Method retrieves additon result
+        private void Retrieve(object origin, Query query)
+        {
+            //check if Calculator target object is correct
+            if (query != null && query.Target == this)
+            {
+                //Return Result fro Private Property
+                query.Result = Result;
+            }
+        }
+
         //Add method declaration, as per requirement
-        public int Add(string numbers)
+        private int Add(string numbers)
         {
             //Define list of Extra Delimiters and add \n
             extraDelimeters = new List<string>();
@@ -229,6 +251,7 @@ namespace String_Calculator
             return this.Result;
         }
 
+        //This method finds and adds complex delimiters to list
         private string AddComplexDelimiters(string numbers, int index)
         {
             //Add new delimiter to list
@@ -269,8 +292,11 @@ namespace String_Calculator
             //Invoke command
             broker.Command(new Command(cal, s));
 
+            //Get result using query
+            int result = broker.Query(new Query { Target = cal });
+
             //Spit out the result
-            Console.WriteLine("Result is: " + cal.Add(s));
+            Console.WriteLine("Result is: " + result);
 
             //Prompt for Key stroke
             Console.WriteLine("Press any key to continue...");
