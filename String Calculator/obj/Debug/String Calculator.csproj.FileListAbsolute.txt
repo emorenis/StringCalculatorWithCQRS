@@ -1,0 +1,7 @@
+F:\Google Drive\Projects\String Calculator\String Calculator\bin\Debug\String Calculator.exe.config
+F:\Google Drive\Projects\String Calculator\String Calculator\bin\Debug\String Calculator.exe
+F:\Google Drive\Projects\String Calculator\String Calculator\bin\Debug\String Calculator.pdb
+F:\Google Drive\Projects\String Calculator\String Calculator\obj\Debug\String Calculator.csprojResolveAssemblyReference.cache
+F:\Google Drive\Projects\String Calculator\String Calculator\obj\Debug\String Calculator.csproj.CoreCompileInputs.cache
+F:\Google Drive\Projects\String Calculator\String Calculator\obj\Debug\String Calculator.exe
+F:\Google Drive\Projects\String Calculator\String Calculator\obj\Debug\String Calculator.pdb
