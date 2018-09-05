@@ -22,11 +22,28 @@ namespace String_Calculator
             //Check if line contains extra delimiter
             if (numbers.Contains("//"))
             {
-                //Add new delimiter to list
-                extraDelimeters.Add(numbers.Substring(2,1));
+                //cut out delimiter starter
+                numbers = numbers.Substring(2, numbers.Length - 2);
 
-                //cut out delimiter substring 
-                numbers = numbers.Substring(5, numbers.Length-5);
+                //Determine if complex delimiter and what its end position
+                int index = numbers.IndexOf("]");
+
+                if (index == -1)
+                {
+                    //Add new delimiter to list
+                    extraDelimeters.Add(numbers.Substring(0, 1));
+
+                    //cut out delimiter substring 
+                    numbers = numbers.Substring(3, numbers.Length - 3);
+                }
+                else
+                {
+                    //Add new delimiter to list
+                    extraDelimeters.Add(numbers.Substring(1, index-1));
+
+                    //cut out delimiter substring 
+                    numbers = numbers.Substring(index+3, numbers.Length - index-3);
+                }
             }
 
             //loop through extra delimiters
