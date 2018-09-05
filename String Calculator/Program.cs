@@ -125,6 +125,7 @@ namespace String_Calculator
                 if (num > 1000)
                     continue;
 
+                //If it is the first operand, then assign to result
                 if (result == -1)
                     result = num;
                 else
