@@ -7,11 +7,53 @@ using System.Threading.Tasks;
 
 namespace String_Calculator
 {
+    //Declaring EventBroker Class
+    public class EventBroker
+    {
+        //This is list that will store all events
+        public List<Event> Events = new List<Event>();
+
+        //This is Commands Event Handler
+        public event EventHandler<Command> Commands;
+
+        //This is Query Event Handler
+        public event EventHandler<Query> Queries;
+    }
+
+    //Declaring Event Class
+    public class Event
+    {
+
+    }
+
+    //Declaring Command Class
+    public class Command
+    {
+
+    }
+
+    //Declaring Query Class
+    public class Query
+    {
+
+    }
+
     public class Calculator
     {
-        //Declaring for future use
-        int Result = 0;
+        //Declaring instance of EventBroker
+        EventBroker broker;
+        
+        //Encapsulating Result variable
+        private int Result = 0;
+
+        //Declaring internal List for extraDelimiters
         List<string> extraDelimeters;
+
+        //Constructor, initializing EventBroker
+        public Calculator(EventBroker broker)
+        {
+            this.broker = broker;
+        }
 
         //Add method declaration, as per requirement
         public int Add(string numbers)
@@ -188,8 +230,11 @@ namespace String_Calculator
     {
         static void Main(string[] args)
         {
+            //Declare new EventBroker instance
+            var broker = new EventBroker();
+            
             //Instantiate Calculator object
-            Calculator cal = new Calculator();
+            Calculator cal = new Calculator(broker);
 
             //Prompt for string 
             Console.Write("Give me string to Calculate?");
