@@ -20,6 +20,32 @@ namespace String_Calculator
             extraDelimeters = new List<string>();
             extraDelimeters.Add("\\n");
 
+            //define operator
+            string op = "+";
+
+            //check if operator provided in for of !+1,2 or !*//[***]\n1***2***3
+            if (numbers.Contains("!"))
+            {
+                //delect operator appropriately , defaulting to addition
+                switch (numbers.Substring(1, 1))
+                {
+                    case "*":
+                        op = "*";
+                        break;
+                    case "/":
+                        op = "/";
+                        break;
+                    case "-":
+                        op = "-";
+                        break;
+                    default:
+                        op = "+";
+                        break;
+                }
+                //remove operator substring
+                numbers = numbers.Substring(2, numbers.Length - 2);
+            }
+
             //Check if line contains extra delimiter
             if (numbers.Contains("//"))
             {
@@ -41,7 +67,7 @@ namespace String_Calculator
                 {
                     //Call Complex Delimiter Search function
                     numbers = AddComplexDelimiters(numbers, index);
-                    
+
                     //cut out end of delimiter substring 
                     numbers = numbers.Substring(2, numbers.Length - 2);
                 }
@@ -61,13 +87,13 @@ namespace String_Calculator
 
             //Splitting by comma only and it does take unknown amount of numbers
             var numbersArray = numbers.Split(',');
-            
+
             //if string is emtpy, bale with 0
             if (numbersArray.Length == 0)
                 return 0;
 
             //This will store our result
-            int result = 0;
+            int result = -1;
 
             //Instantiate exceptions list and exception message
             List<string> exceptions = new List<string>();
@@ -83,7 +109,7 @@ namespace String_Calculator
                     exceptions.Add(n);
                     continue;
                 }
-                
+
                 //If input contains anything but 0 1 2 or , return 0
                 if (Regex.IsMatch(n, "[^0123]"))
                     return 0;
@@ -98,9 +124,22 @@ namespace String_Calculator
                 //if larger than 1000 - ignore
                 if (num > 1000)
                     continue;
-                
-                //otherwise perform addition
-                result += num; 
+
+                if (result == -1)
+                    result = num;
+                else
+                {
+
+                    //otherwise perform operation
+                    if (op == "/" && num != 0)
+                        result /= num;
+                    else if (op == "*")
+                        result *= num;
+                    else if (op == "-")
+                        result -= num;
+                    else
+                        result += num;
+                }
             }
 
             //check if any exceptions
@@ -150,7 +189,7 @@ namespace String_Calculator
         {
             //Instantiate Calculator object
             Calculator cal = new Calculator();
-            
+
             //Prompt for string 
             Console.Write("Give me string to Calculate?");
 
