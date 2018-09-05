@@ -18,6 +18,9 @@ namespace String_Calculator
 
         //This is Query Event Handler
         public event EventHandler<Query> Queries;
+
+        //Declare Command Invoke Method  
+        public void Command(Command command) => Commands?.Invoke(this, command);
     }
 
     //Declaring Event Class
@@ -27,9 +30,18 @@ namespace String_Calculator
     }
 
     //Declaring Command Class
-    public class Command
+    public class Command : EventArgs
     {
+        //Declare Calculator and Passed string
+        public Calculator Calc;
+        public string Numbers;
 
+        //Instantiate properties in constructor 
+        public Command(Calculator calc, string numbers)
+        {
+            Calc = calc;
+            Numbers = numbers;
+        }
     }
 
     //Declaring Query Class
@@ -52,7 +64,19 @@ namespace String_Calculator
         //Constructor, initializing EventBroker
         public Calculator(EventBroker broker)
         {
+            //Assign broker 
             this.broker = broker;
+            //Declare Delegate
+            broker.Commands += Perform;
+        }
+
+        private void Perform(object origin, Command command)
+        {
+            //check if command is present and Calculator object is correct
+            if (command != null && command.Calc == this)
+            {
+                Add(command.Numbers);
+            }
         }
 
         //Add method declaration, as per requirement
@@ -241,6 +265,9 @@ namespace String_Calculator
 
             //Take sting
             string s = Console.ReadLine();
+
+            //Invoke command
+            broker.Command(new Command(cal, s));
 
             //Spit out the result
             Console.WriteLine("Result is: " + cal.Add(s));
